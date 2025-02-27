@@ -1,0 +1,5 @@
+ollama
+redis
+numpy
+pymupdf
+sentence_transformers
