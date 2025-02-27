@@ -1,6 +1,6 @@
 ## DS 4300 Example - from docs
 
-import ollama
+from requests import post
 import redis
 import numpy as np
 from redis.commands.search.query import Query
@@ -43,8 +43,16 @@ def create_hnsw_index():
 # Generate an embedding using nomic-embed-text
 def get_embedding(text: str, model: str = "nomic-embed-text") -> list:
 
-    response = ollama.embeddings(model=model, prompt=text)
-    return response["embedding"]
+    response = post(
+        # Assumes local port 3000 is forwarded to the
+        # port the Ollama API is running on on the VM.
+        url='http://localhost:3000/api/embed',
+        json={
+            'model': model,
+            'input': text
+        }
+    ).json()
+    return response["embeddings"][0]
 
 
 # store the embedding in Redis

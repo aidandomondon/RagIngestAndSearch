@@ -2,7 +2,7 @@ import redis
 import json
 import numpy as np
 from sentence_transformers import SentenceTransformer
-import ollama
+from requests import post
 from redis.commands.search.query import Query
 from redis.commands.search.field import VectorField, TextField
 
@@ -23,8 +23,16 @@ DISTANCE_METRIC = "COSINE"
 
 def get_embedding(text: str, model: str = "nomic-embed-text") -> list:
 
-    response = ollama.embeddings(model=model, prompt=text)
-    return response["embedding"]
+    response = post(
+        # Assumes local port 3000 is forwarded to the
+        # port the Ollama API is running on on the VM.
+        url='http://localhost:3000/api/embed',
+        json={
+            "model": model,
+            "input": text
+        }
+    ).json()
+    return response["embeddings"][0]
 
 
 def search_embeddings(query, top_k=3):
@@ -101,10 +109,21 @@ Query: {query}
 Answer:"""
 
     # Generate response using Ollama
-    response = ollama.chat(
-        model="mistral:latest", messages=[{"role": "user", "content": prompt}]
-    )
-
+    response = post(
+        # Assumes local port 3000 is forwarded to the
+        # port the Ollama API is running on on the VM.
+        url='http://localhost:3000/api/chat',
+        json={
+            'model': 'mistral:latest',
+            'messages': [
+                {
+                    'role': 'user',
+                    'content': prompt
+                }
+            ],
+            'stream': False
+        }
+    ).json()
     return response["message"]["content"]
 
 
