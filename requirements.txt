@@ -1,5 +1,5 @@
 ollama
-redis
+chromadb
 numpy
 pymupdf
 sentence_transformers

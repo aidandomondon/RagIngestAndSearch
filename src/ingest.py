@@ -1,14 +1,21 @@
 ## DS 4300 Example - from docs
 
 import ollama
-import redis
 import numpy as np
-from redis.commands.search.query import Query
+import chromadb
 import os
 import fitz
 
-# Initialize Redis connection
-redis_client = redis.Redis(host="localhost", port=6380, db=0)
+# Initialize Chroma connection
+client_settings = chromadb.Settings()
+client_settings.allow_isreset = True
+chroma_client = chromadb.HttpClient(host="localhost", port=8000, settings=client_settings)
+
+# Initialize Chroma wrapper for custom embedding model
+class ChromaCustomEmbeddingFunction(chromadb.EmbeddingFunction):
+    def __call__(self, input: chromadb.Documents) -> chromadb.Embeddings:
+        return chromadb.Embeddings(map(lambda doc: get_embedding(doc), input))
+embedding_function = ChromaCustomEmbeddingFunction()
 
 VECTOR_DIM = 768
 INDEX_NAME = "embedding_index"
@@ -16,26 +23,27 @@ DOC_PREFIX = "doc:"
 DISTANCE_METRIC = "COSINE"
 
 
-# used to clear the redis vector store
-def clear_redis_store():
-    print("Clearing existing Redis store...")
-    redis_client.flushdb()
-    print("Redis store cleared.")
+# used to clear the chroma vector store
+def clear_chroma_store():
+    print("Clearing existing Chroma store...")
+    if chroma_client.reset():
+        print("Chroma store cleared.")
+    else:
+        raise Exception("Chroma store unable to be cleared.")
 
 
-# Create an HNSW index in Redis
+# Create a collection in Chroma
 def create_hnsw_index():
     try:
-        redis_client.execute_command(f"FT.DROPINDEX {INDEX_NAME} DD")
-    except redis.exceptions.ResponseError:
-        pass
-
-    redis_client.execute_command(
-        f"""
-        FT.CREATE {INDEX_NAME} ON HASH PREFIX 1 {DOC_PREFIX}
-        SCHEMA text TEXT
-        embedding VECTOR HNSW 6 DIM {VECTOR_DIM} TYPE FLOAT32 DISTANCE_METRIC {DISTANCE_METRIC}
-        """
+        chroma_client.delete_collection(INDEX_NAME)
+    except Exception as e:
+        raise Exception(e)
+    chroma_client.create_collection(
+        name=INDEX_NAME,
+        metadata=chromadb.CollectionMetadata({
+            "hsnw:space": DISTANCE_METRIC.lower()
+        }),
+        embedding_function=embedding_function
     )
     print("Index created successfully.")
 
@@ -47,19 +55,13 @@ def get_embedding(text: str, model: str = "nomic-embed-text") -> list:
     return response["embedding"]
 
 
-# store the embedding in Redis
+# store the embedding in Chroma
 def store_embedding(file: str, page: str, chunk: str, embedding: list):
     key = f"{DOC_PREFIX}:{file}_page_{page}_chunk_{chunk}"
-    redis_client.hset(
-        key,
-        mapping={
-            "file": file,
-            "page": page,
-            "chunk": chunk,
-            "embedding": np.array(
-                embedding, dtype=np.float32
-            ).tobytes(),  # Store as byte array
-        },
+    collection = chroma_client.get_collection(INDEX_NAME, embedding_function)
+    collection.add(
+        ids=[key],
+        embeddings=[embedding],
     )
     print(f"Stored embedding for: {chunk}")
 
@@ -108,31 +110,26 @@ def process_pdfs(data_dir):
             print(f" -----> Processed {file_name}")
 
 
-def query_redis(query_text: str):
-    q = (
-        Query("*=>[KNN 5 @embedding $vec AS vector_distance]")
-        .sort_by("vector_distance")
-        .return_fields("id", "vector_distance")
-        .dialect(2)
+def query_chroma(query_text: str):
+    collection = chroma_client.get_collection(INDEX_NAME, embedding_function)
+    res = collection.query(
+        query_texts=query_text,
+        n_results=5,
+        include="distances"
     )
-    query_text = "Efficient search in vector databases"
-    embedding = get_embedding(query_text)
-    res = redis_client.ft(INDEX_NAME).search(
-        q, query_params={"vec": np.array(embedding, dtype=np.float32).tobytes()}
-    )
-    # print(res.docs)
-
-    for doc in res.docs:
-        print(f"{doc.id} \n ----> {doc.vector_distance}\n")
+    for i in range(len(res["ids"])):
+        id = res["ids"][i]
+        distance = res["distances"][i]
+        print(f"{id} \n ----> {distance}\n")
 
 
 def main():
-    clear_redis_store()
+    clear_chroma_store()
     create_hnsw_index()
 
     process_pdfs("../data/")
     print("\n---Done processing PDFs---\n")
-    query_redis("What is the capital of France?")
+    query_chroma("What is the capital of France?")
 
 
 if __name__ == "__main__":
