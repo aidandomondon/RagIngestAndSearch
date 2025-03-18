@@ -4,5 +4,5 @@ numpy
 pymupdf
 sentence_transformers
 chromadb
-pymilvus
 psutil
+qdrant-client
