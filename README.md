@@ -38,12 +38,12 @@ Experiments are run by:
 
 | Experiment Variable(s) | Script | Dependencies |
 | - | - | - |
-| Chunk size, Chunk overlap size | test-chunking.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
-| Text pre-processing technique | test-preprocessing.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
-| Embedding Model | test-embedding-model.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [sentence-transformersall-MiniLM-L6-v2](#sentence-transformersall-MiniLM-L6-v2), [sentence-transformersall-mpnet-base-v2](#sentence-transformersall-mpnet-base-v2)
-| Vector Database | test-db.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [Qdrant](#Qdrant)
-| System Prompt | test-prompt.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
-| LLM | test-llm.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [DeepSeek R1 14B](#DeepSeek-R1-14B), [DeepSeek R1 32B](#DeepSeek-R1-32B)
+| Chunk size, Chunk overlap size | [test-chunking.py](./src/test-chunking.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
+| Text pre-processing technique | [test-preprocessing.py](./src/test-preprocessing.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
+| Embedding Model | [test-embedding-model.py](./src/test-embedding-model.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [sentence-transformersall-MiniLM-L6-v2](#sentence-transformersall-MiniLM-L6-v2), [sentence-transformersall-mpnet-base-v2](#sentence-transformersall-mpnet-base-v2)
+| Vector Database | [test-db.py](./src/test-db.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [Qdrant](#Qdrant)
+| System Prompt | [test-prompt.py](./src/test-prompt.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
+| LLM | [test-llm.py](./src/test-llm.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [DeepSeek R1 14B](#DeepSeek-R1-14B), [DeepSeek R1 32B](#DeepSeek-R1-32B)
 
 ### More About Experiment Dependencies 
 
