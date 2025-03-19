@@ -3,3 +3,7 @@ redis
 numpy
 pymupdf
 sentence_transformers
+chromadb
+psutil
+qdrant-client
+nltk

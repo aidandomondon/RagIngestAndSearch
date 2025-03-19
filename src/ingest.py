@@ -6,9 +6,17 @@ import numpy as np
 from redis.commands.search.query import Query
 import os
 import fitz
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+
+# NLTK setup
+STOPWORDS = set(stopwords.words('english'))
+LEMMATIZER = WordNetLemmatizer()
 
 # Initialize Redis connection
-redis_client = redis.Redis(host="localhost", port=6380, db=0)
+redis_client = redis.Redis(host="localhost", port=6379, db=0)
 
 VECTOR_DIM = 768
 INDEX_NAME = "embedding_index"
@@ -84,15 +92,40 @@ def split_text_into_chunks(text, chunk_size=300, overlap=50):
         chunks.append(chunk)
     return chunks
 
+def preprocess_text(text: str, remove_whitespace: bool = False, remove_punctuation: bool = False, remove_stopwords: bool = False, lemmatize: bool = False,) -> str:
+    """Preprocess text by removing whitespace, punctuation, stopwords, and lemmatizing."""
+    if remove_whitespace:
+        text = " ".join(text.split())
+
+    if remove_punctuation:
+        text = re.sub(r'[^\w\s]', '', text)
+
+    tokens = text.split()
+
+    if remove_stopwords:
+        tokens = [t for t in tokens if t.lower() not in STOPWORDS]
+
+    if lemmatize:
+        tokens = [LEMMATIZER.lemmatize(t) for t in tokens]
+
+    # Rejoin tokens 
+    return " ".join(tokens)
 
 # Process all PDF files in a given directory
-def process_pdfs(data_dir):
+def process_pdfs(data_dir, remove_whitespace=False, remove_punctuation=False, remove_stopwords=False, lemmatize=False):
 
     for file_name in os.listdir(data_dir):
         if file_name.endswith(".pdf"):
             pdf_path = os.path.join(data_dir, file_name)
             text_by_page = extract_text_from_pdf(pdf_path)
             for page_num, text in text_by_page:
+                text = preprocess_text(
+                text,
+                remove_whitespace=remove_whitespace,
+                remove_punctuation=remove_punctuation,
+                remove_stopwords=remove_stopwords,
+                lemmatize=lemmatize)
+
                 chunks = split_text_into_chunks(text)
                 # print(f"  Chunks: {chunks}")
                 for chunk_index, chunk in enumerate(chunks):
@@ -130,7 +163,13 @@ def main():
     clear_redis_store()
     create_hnsw_index()
 
-    process_pdfs("../data/")
+    process_pdfs(
+        data_dir="../data/",
+        remove_whitespace=False,
+        remove_punctuation=False,
+        remove_stopwords=False,
+        lemmatize=False
+    )
     print("\n---Done processing PDFs---\n")
     query_redis("What is the capital of France?")
 
