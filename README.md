@@ -46,6 +46,7 @@ Experiments are run by:
 | LLM | test-llm.py | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama3.2), [DeepSeek R1 14B](#DeepSeek-R1-14B), [DeepSeek R1 32B](#DeepSeek-R1-32B)
 
 ### More About Experiment Dependencies 
+
 #### Redis-stack
 For experiments that list Redis-stack as a dependency, you must run a Docker container from the Redis-stack image.
 ```
@@ -56,22 +57,37 @@ For experiments that list Qdrant as a dependency, you must run a Docker containe
 ```
 docker run -p 6333:6333 qdrant/qdrant
 ```
+
 #### Nomic-embed-text
 For experiments that list nomic-embed-text as a dependency, you must install nomic-embed-text on Ollama.
 ```
 ollama pull nomic-embed-text
 ```
-
 #### sentence-transformers/all-MiniLM-L6-v2
 For experiments that list sentence-transformers/all-MiniLM-L6-v2 as a dependency, you must install sentence-transformers/all-MiniLM-L6-v2 on Ollama.
 ```
 ollama pull sentence-transformers/all-MiniLM-L6-v2
 ```
-
 #### sentence-transformers/all-MiniLM-L6-v2
 For experiments that list sentence-transformers/all-mpnet-base-v2 as a dependency, you must install sentence-transformers/all-mpnet-base-v2 on Ollama.
 ```
 ollama pull sentence-transformers/all-mpnet-base-v2
+```
+
+#### Llama3.2
+For experiments that list Llama3.2 as a dependency, you must install and run Llama3.2 on Ollama.
+```
+ollama run llama3.2
+```
+#### DeepSeek R1 14B
+For experiments that list DeepSeek R1 14B as a dependency, you must install and run DeepSeek R1 14B on Ollama.
+```
+ollama run deepseek-r1:14b
+```
+#### DeepSeek R1 32B
+For experiments that list DeepSeek R1 32B as a dependency, you must install and run DeepSeek R1 32B on Ollama.
+```
+ollama run deepseek-r1:32b
 ```
 
 ## Source Code
