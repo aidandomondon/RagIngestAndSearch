@@ -1,5 +1,23 @@
 # Ollama RAG Ingest and Search
 
+## Setup
+
+Make sure Python has certificate verification setup, running the command:
+```
+$ <directory-to-python-bundle>"Install Certificates.command"
+```
+for example,
+```
+$ /Applications/"Python3.13"/"Install Certificates.command"
+```
+
+Then, navigate to the root directory of this project.
+
+Run the setup script.
+```
+$ bash setup.sh
+```
+
 ## Prerequisites
 
 - Ollama app set up ([Ollama.com](Ollama.com))
