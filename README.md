@@ -33,7 +33,7 @@ setup_env.bat
 Experiments are run by:
 1. Navigating to `src/`
 2. Finding, in the table below, the entry that corresponds to the desired experiment and:
-    1. Running the dependencies specified by the table entry (all experiments require [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), and [Llama3.2](#Llama3.2)).
+    1. Running the dependencies specified by the table entry (all experiments require [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), and [Llama3.2](#Llama32)).
     2. Running the Python script specified by the table entry.
 
 | Experiment Variable(s) | Script | Dependencies |
@@ -68,7 +68,7 @@ For experiments that list sentence-transformers/all-MiniLM-L6-v2 as a dependency
 ```
 ollama pull sentence-transformers/all-MiniLM-L6-v2
 ```
-#### sentence-transformers/all-MiniLM-L6-v2
+#### sentence-transformers/all-mpnet-base-v2
 For experiments that list sentence-transformers/all-mpnet-base-v2 as a dependency, you must install sentence-transformers/all-mpnet-base-v2 on Ollama.
 ```
 ollama pull sentence-transformers/all-mpnet-base-v2
