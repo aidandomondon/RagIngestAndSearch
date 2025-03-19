@@ -144,7 +144,7 @@ def test_qdrant(doc_entries):
     print_memory_usage("Qdrant")
 
 def main():
-    pdf_path = os.path.join("..", "data", "02 - The Relational Model and Rel Algebra - Instructor.pdf")
+    pdf_path = os.path.join("data", "02 - The Relational Model and Rel Algebra - Instructor.pdf")
     print(f"Processing PDF: {pdf_path}")
     doc_entries = process_pdf(pdf_path)
     print(f"Total document entries: {len(doc_entries)}")
