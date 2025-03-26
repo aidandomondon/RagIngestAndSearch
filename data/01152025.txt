@@ -1,0 +1,26 @@
+Hierarchy of speed of accessing different places in computer memory (fastest to slowest):
+- CPU
+- Registers
+- L1 Cache
+- L2 Cache
+- RAM
+- SDD/HDD (Secondary storage)
+
+Key fact: Accessing Secondary Storage is multiple orders of magnitude slower than accessing RAM
+
+Secondary Storage:
+- Lots of storage
+- Persistent
+- Slow
+
+Due to this slowness, database systems want to minimize the number of secondary storage accesses they make.
+
+Secondary storage is not accessed byte-by-byte. It is accessed in blocks. e.g. to access one integer, you can't just grab that integer, you must grab a the block it is located in.
+- example fact: Binary search on a sorted array of 128 integers is faster than even just 1 disk access.
+
+If when accessing from a tree a value whose path from the root has length x, x disk accesses are made.
+Thus, decreasing the "average" value of x for a node/value in the tree will accomplish our goal of minimizing the number of disk accesses.
+One way of doing this decreasing is to reduce the height of the tree.
+One way of doing –this- is by using B/B+ trees rather than binary/AVL trees. B/B+ trees are shallower than binary trees (with the sacrifice that they are wider).
+
+Develop/Test on subset of the data

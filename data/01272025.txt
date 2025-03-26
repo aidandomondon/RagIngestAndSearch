@@ -1,0 +1,5 @@
++------------------------------------+
+| Moving Beyond the Relational Model |
++------------------------------------+
+
+Transaction: unit of work for a database.

@@ -1,0 +1,100 @@
++-----------------+
+| Hash Tables     |
++-----------------+
+
+Table:
+0
+1
+2
+3
+4
+5
+
+Entries to insert:
+k  v
+10 cat
+20 dog
+15 bird
+
+Consider the hash function
+	h(k) = k mod len(table)
+
+-----------------
+Insert 10, cat:
+-----------------
+
+h(10) = 10 mod 6 = 4
+
+|
+|
+v
+
+Table
+0
+1
+2
+3
+4 (10, cat)
+5
+
+-----------------
+Insert 20, dog:
+-----------------
+
+h(20) = 20 mod 6 = 2
+
+|
+|
+v
+
+Table
+0
+1
+2 (20, dog)
+3
+4 (10, cat)
+5
+
+The load factor \lambda of a hash table is defined as \lambda = m / n where m is the table size and n is the number of inserted values.
+
+To be a useful hash function, a function must require a constant (w.r.t. k) amount of work to evaluate.
+
+-----------------
+Insert 2, bird:
+-----------------
+
+h(2) = 2 mod 6 = 2
+
+|
+|
+v
+
+Issue: 2 already has an entry in the hash table.
+Solution: Make 2's value an array, allowing for multiple entries to be at 2.
+		When searching for an entry, we will simply find its hash value 
+		and then linear search through the array at that index in the table.
+
+Table
+0
+1
+2 [(20, dog), (2, bird)]
+3
+4 (10, cat)
+5
+
++----------------------------+
+| On Table Size / Dispersion |
++----------------------------+
+
+Always want to start with a big table, as this decreases the expected value of the number of items in a given bucket,
+allowing for faster searching in buckets. Decreasing this expected value is increasing the _dispersion_.
+
+A rough rule for maintaining a low expected value of the number of items in a given bucket
+is to always keep the load factor of your hash table under 0.9.
+e.g., with a table size of 1 million, expand your table once you've inserted more than 100,000 entries.
+
+Longest chain 5 kv pairs => Makes for constant time lookup.
+
+Implementation notes: 
+- python hash function -> mod table size.
+- when parsing documents for words, save them as a set so you don't try to insert duplicates into the hash table and waste redundant time.

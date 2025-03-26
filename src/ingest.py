@@ -81,6 +81,11 @@ def extract_text_from_pdf(pdf_path):
         text_by_page.append((page_num, page.get_text()))
     return text_by_page
 
+# extract the text from a .txt file
+def extract_text_from_txt(txt_path):
+    """Extract text from  a txt file"""
+    text = open(txt_path, "r").read()
+    return text
 
 # split the text into chunks with overlap
 def split_text_into_chunks(text, chunk_size=300, overlap=50):
@@ -140,6 +145,34 @@ def process_pdfs(data_dir, remove_whitespace=False, remove_punctuation=False, re
                     )
             print(f" -----> Processed {file_name}")
 
+# Process all txt files in a given directory
+def process_txts(data_dir, remove_whitespace=False, remove_punctuation=False, remove_stopwords=False, lemmatize=False):
+
+    for file_name in os.listdir(data_dir):
+        if file_name.endswith(".txt") or file_name.endswith(".ipynb"):
+            txt_path = os.path.join(data_dir, file_name)
+            text = extract_text_from_txt(txt_path)
+            text = preprocess_text(
+                text,
+                remove_whitespace=remove_whitespace,
+                remove_punctuation=remove_punctuation,
+                remove_stopwords=remove_stopwords,
+                lemmatize=lemmatize
+            )
+
+            chunks = split_text_into_chunks(text)
+            # print(f"  Chunks: {chunks}")
+            for chunk_index, chunk in enumerate(chunks):
+                # embedding = calculate_embedding(chunk)
+                embedding = get_embedding(chunk)
+                store_embedding(
+                    file=file_name,
+                    page=0,
+                    # chunk=str(chunk_index),
+                    chunk=str(chunk),
+                    embedding=embedding,
+                )
+            print(f" -----> Processed {file_name}")
 
 def query_redis(query_text: str):
     q = (
@@ -171,6 +204,16 @@ def main():
         lemmatize=False
     )
     print("\n---Done processing PDFs---\n")
+
+    process_txts(
+        data_dir="../data/",
+        remove_whitespace=False,
+        remove_punctuation=False,
+        remove_stopwords=False,
+        lemmatize=False
+    )
+    print("\n---Done processing txts---\n")
+    
     query_redis("What is the capital of France?")
 
 

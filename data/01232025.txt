@@ -1,0 +1,209 @@
++----------+
+| B+ Trees |
++----------+
+- Optimized for disk-based indexing.
+- Minimizing # of disk accesses made when indexing.
+- Def: an M-way tree with order M where:
+	M is the maximum number of keys in each node.
+	and therefore that M+1 is the maximum number of children for each node.
+- Properties: 
+	All nodes except the root node must be at least half full (i.e. M/2 keys full).
+	Insertions are done at the leaf level.
+	Leaves are stored as a doubly-linked list.
+	Internal nodes only store keys and pointers to children.
+		Internal nodes in Regular B trees store keys, pointers to children, and data.
+		Because internal nodes in B+ trees only store keys, and no data, they take up less memory. This allows us to use a higher "M" than we use in B trees.
+		A higher "M" makes the tree shallower, decreasing the average number of levels of the tree we descend through to reach a key (which is the number of disk accesses needed to retrieve a record).
+		Because of this disk-access-minimization, B Trees are used when working in-memory, while B+ Trees are used when working with external disks.
+
+----------
+Example
+----------
+M=3
+
+Insert 42
+
++----+----+----+
+| 42 |    |    |
++----+----+----+
+
+Insert 29
+
++----+----+----+
+| 29 | 42 |    |
++----+----+----+
+
+Insert 81
+
++----+----+----+
+| 29 | 42 | 81 |
++----+----+----+
+
+Insert 99
+
+Since leaf full, add a new leaf.
++----+----+----+    +----+----+----+
+| 29 | 42 | 81 |    |    |    |    |
++----+----+----+    +----+----+----+
+
+Split leaf in half, send other half to newly created leaf.
++----+----+----+    +----+----+----+
+| 29 | 42 |    |    | 81 |    |    |
++----+----+----+    +----+----+----+
+
+Insert value to be inserted into appropriate leaf.
++----+----+----+    +----+----+----+
+| 29 | 42 |    |    | 81 | 99 |    |
++----+----+----+    +----+----+----+
+
+Insert copy of smallest value of new node into parent.
+
++----+----+----+
+| 81 |    |    |
++----+----+----+
+|     \_____________
+v                   v
++----+----+----+    +----+----+----+
+| 29 | 42 |    |    | 81 | 99 |    |
++----+----+----+    +----+----+----+
+
+Insert 35
+
++----+----+----+
+| 81 |    |    |
++----+----+----+
+|     \_____________
+v                   v
++----+----+----+    +----+----+----+
+| 29 | 35 | 42 |    | 81 | 99 |    |
++----+----+----+    +----+----+----+
+
+***Why is storing 81's data at the leaf node for 81 better than storing it at the root node for 81?
+
+Insert 2
+
++----+----+----+
+| 81 |    |    |
++----+----+----+
+|     \_____________
+v                   v
++----+----+----+    +----+----+----+
+| 29 | 35 | 42 |    | 81 | 99 |    |
++----+----+----+    +----+----+----+
+
+Want to insert into left leaf but full. Split left leaf and insert into appropriate.
+
++----+----+----+
+| 81 |    |    |
++----+----+----+
+|     \________________________________
+v                                      v
++----+----+----+   +----+----+----+    +----+----+----+
+| 2  | 29 |    |   | 35 | 42 |    |    | 81 | 99 |    |
++----+----+----+   +----+----+----+    +----+----+----+
+
+Copy smallest value in newly created node into the parent.
+
++----+----+----+
+| 35 | 81 |    |
++----+----+----+
+|    |     \___________________________
+v   	+-------------v                   v
++----+----+----+   +----+----+----+    +----+----+----+
+| 2  | 29 |    |   | 35 | 42 |    |    | 81 | 99 |    |
++----+----+----+   +----+----+----+    +----+----+----+
+
+B+ Tree leaf nodes also have pointers between them (not shown in above diagrams), i.e. the leaf nodes all together are a doubly-linked list. 
+This is so that range queries are faster.
+
+e.g. The query "Find all values between 29 and 99" simply requires traversing some arrays and following two pointers.
+- Traversing (part of):
++----+----+----+
+| 2  | 29 |    |
++----+----+----+
+- Following the pointer from this node to the next:
++----+----+----+   +----+----+----+
+| 2  | 29 |    |<->| 35 | 42 |    |
++----+----+----+   +----+----+----+
+- Traversing that node (array) and following its pointer to the next node, and traversing that node (array).
++----+----+----+   +----+----+----+
+| 35 | 42 |    |<->| 81 | 99 |    |
++----+----+----+   +----+----+----+
+
+Thus, showing leaf-node pointers, our last step looks like this:
+
++----+----+----+
+| 35 | 81 |    |
++----+----+----+
+|    |     \___________________________
+v   	+-------------v                  v
++----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 |    |<->| 35 | 42 |    |<->| 81 | 99 |    |
++----+----+----+   +----+----+----+   +----+----+----+
+
+Insert 100
+
++----+----+----+
+| 35 | 81 |    |
++----+----+----+
+|    |     \___________________________
+v   	+-------------v                  v
++----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 |    |<->| 35 | 42 |    |<->| 81 | 99 | 100|
++----+----+----+   +----+----+----+   +----+----+----+
+
+Insert 30
+
++----+----+----+
+| 35 | 81 |    |
++----+----+----+
+|    |     \___________________________
+v   	+-------------v                  v
++----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 | 30 |<->| 35 | 42 |    |<->| 81 | 99 | 100|
++----+----+----+   +----+----+----+   +----+----+----+
+
+Insert 45
+
++----+----+----+
+| 35 | 81 |    |
++----+----+----+
+|    |     \___________________________
+v   	+-------------v                  v
++----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 | 30 |<->| 35 | 42 | 45 |<->| 81 | 99 | 100|
++----+----+----+   +----+----+----+   +----+----+----+
+
+Insert 82
+
+Leaf to insert into is full, split it.
++----+----+----+
+| 35 | 81 |    |
++----+----+----+-----------------------------------------+
+|    |     \___________________________                  |
+v   	+-------------v                  v                  v
++----+----+----+   +----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 | 30 |<->| 35 | 42 | 45 |<->| 81 | 82 |    |<->| 99 | 100|    |
++----+----+----+   +----+----+----+   +----+----+----+   +----+----+----+
+
+Copy least value of newly created leaf into parent.
++----+----+----+
+| 35 | 81 | 99 |
++----+----+----+-----------------------------------------+
+|    |     \___________________________                  |
+v   	+-------------v                  v                  v
++----+----+----+   +----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 29 | 30 |<->| 35 | 42 | 45 |<->| 81 | 82 |    |<->| 99 | 100|    |
++----+----+----+   +----+----+----+   +----+----+----+   +----+----+----+
+
+Insert 4
+
++----+----+----+
+| 35 | 81 | 99 |
++----+----+----+-------------------------------------------------------------+
+|    |     \______________________________________________                   |
+v   	+---------------------------------v                  v                  v
++----+----+----+   +----+----+----+    +----+----+----+   +----+----+----+   +----+----+----+
+| 2  | 4  |    |   | 29 | 30 |    | <->| 35 | 42 | 45 |<->| 81 | 82 |    |<->| 99 | 100|    |
++----+----+----+   +----+----+----+    +----+----+----+   +----+----+----+   +----+----+----+
+

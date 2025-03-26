@@ -1,0 +1,65 @@
+Assuming a tree is already AVL, an insertion of one node can cause at most one imbalance in the tree (one imbalanced/non-AVL node).
+
+We call the newly non-AVL node the "node of imbalance".
+
+There are 4 cases of imbalance at the node of imbalance:
+
+1. LL
+ASCII Diagram of inserting a node as the left child of the left child of the node of imbalance.
+
+Before:
+    z
+   /
+  y
+
+After:
+    z
+   /
+  y
+ /
+x
+
+2. LR
+ASCII Diagram of inserting a node as the right child of the left child of the node of imbalance.
+
+Before:
+    z
+   /
+  y
+
+After:
+    z
+   /
+  y
+   \
+    x
+
+3. RL
+ASCII Diagram of inserting a node as the left child of the right child of the node of imbalance.
+
+Before:
+ z
+  \
+   y
+
+After:
+ z
+  \
+   y
+  /
+ x
+
+4. RR
+ASCII Diagram of inserting a node as the right child of the right child of the node of imbalance.
+
+Before:
+ z
+  \
+   y
+
+After:
+ z
+  \
+   y
+    \
+     x
