@@ -9,7 +9,7 @@ from redis.commands.search.field import VectorField, TextField
 
 # Initialize models
 # embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-redis_client = redis.StrictRedis(host="localhost", port=6380, decode_responses=True)
+redis_client = redis.StrictRedis(host="localhost", port=6379, decode_responses=True)
 
 VECTOR_DIM = 768
 INDEX_NAME = "embedding_index"
@@ -102,7 +102,7 @@ Answer:"""
 
     # Generate response using Ollama
     response = ollama.chat(
-        model="mistral:latest", messages=[{"role": "user", "content": prompt}]
+        model="llama3.2", messages=[{"role": "user", "content": prompt}]
     )
 
     return response["message"]["content"]
