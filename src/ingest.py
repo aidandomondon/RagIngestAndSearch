@@ -69,7 +69,7 @@ def store_embedding(file: str, page: str, chunk: str, embedding: list):
             ).tobytes(),  # Store as byte array
         },
     )
-    #print(f"Stored embedding for: {chunk}")
+    print(f"Stored embedding for: {chunk}")
 
 
 # extract the text from a PDF by page
