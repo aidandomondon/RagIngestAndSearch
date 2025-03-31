@@ -7,3 +7,4 @@ chromadb
 psutil
 qdrant-client
 nltk
+tqdm
