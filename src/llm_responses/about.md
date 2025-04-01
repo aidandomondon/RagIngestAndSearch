@@ -1,0 +1,1 @@
+This directory exists to hold files containing the LLM's responses to test queries produced when running some of the experiments.

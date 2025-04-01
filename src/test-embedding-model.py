@@ -10,6 +10,8 @@ from embeddors.NomicEmbeddor import NomicEmbeddor
 from random import sample
 from measured_ingest import measure_ingest
 from measured_query import measure_query
+from os.path import join
+from json import dumps
 
 # Text preparation steps, 
 # chunk size & chunk overlap size, 
@@ -69,4 +71,6 @@ for model_name, model in tqdm(sample(sorted(models.items()), k=len(models)), uni
 # Print results
 print("Model\tIngestion Time\tQuery Time\tMemory Usage")
 for model_name, result in results.items(): 
+    with open(join(".", "llm_responses", f"test-embedding-model-{model_name}.json"), 'w') as file:
+        file.write(dumps(result['responses']))
     print(f"{model_name}\t{result['ingestion_time']}\t{result['query_time']}\t{result['memory_usage']}")
