@@ -103,6 +103,7 @@ Answer:"""
 
     # Generate response using Ollama
     response = ollama.chat(
+        test-embedding-model.py
         model=LLM, messages=[{"role": "user", "content": prompt}]
     )
 

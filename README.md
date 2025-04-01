@@ -40,7 +40,7 @@ Experiments are run by:
 | - | - | - |
 | Chunk size, Chunk overlap size | [test-chunking.py](./src/test-chunking.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
 | Text pre-processing technique | [test-preprocessing.py](./src/test-preprocessing.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
-| Embedding Model | [test-embedding-model.py](./src/test-embedding-model.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [sentence-transformersall-MiniLM-L6-v2](#sentence-transformersall-MiniLM-L6-v2), [sentence-transformersall-mpnet-base-v2](#sentence-transformersall-mpnet-base-v2)
+| Embedding Model | [test-embedding-model.py](./src/test-embedding-model.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [all-minilm](#all-minilm), [all-minilm:33m](#all-minilm33m)
 | Vector Database | [test-db.py](./src/test-db.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [Qdrant](#Qdrant)
 | System Prompt | [test-prompt.py](./src/test-prompt.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
 | LLM | [test-llm.py](./src/test-llm.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [DeepSeek R1 14B](#DeepSeek-R1-14B), [DeepSeek R1 32B](#DeepSeek-R1-32B)
@@ -63,15 +63,15 @@ For experiments that list nomic-embed-text as a dependency, you must install nom
 ```
 ollama pull nomic-embed-text
 ```
-#### sentence-transformers/all-MiniLM-L6-v2
-For experiments that list sentence-transformers/all-MiniLM-L6-v2 as a dependency, you must install sentence-transformers/all-MiniLM-L6-v2 on Ollama.
+#### all-minilm
+For experiments that list all-minilm as a dependency, you must install all-minilm on Ollama.
 ```
-ollama pull sentence-transformers/all-MiniLM-L6-v2
+ollama pull all-minilm
 ```
-#### sentence-transformers/all-mpnet-base-v2
-For experiments that list sentence-transformers/all-mpnet-base-v2 as a dependency, you must install sentence-transformers/all-mpnet-base-v2 on Ollama.
+#### all-minilm:33m
+For experiments that list all-minilm:33m as a dependency, you must install all-minilm:33m on Ollama.
 ```
-ollama pull sentence-transformers/all-mpnet-base-v2
+ollama pull all-minilm:33m
 ```
 
 #### Llama3.2

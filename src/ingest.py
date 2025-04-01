@@ -197,7 +197,7 @@ def main():
     create_hnsw_index()
 
     process_pdfs(
-        data_dir="../data/",
+        data_dir="../",
         remove_whitespace=False,
         remove_punctuation=False,
         remove_stopwords=False,
