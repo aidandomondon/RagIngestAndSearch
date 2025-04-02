@@ -1,0 +1,7 @@
+{
+    "List three differences between Redis and MongoDB.": "Based on the provided context, I don't have enough information to answer your query accurately. However, I can try to provide some general differences that are commonly known about Redis and MongoDB:\n\n1. Data Structure: Redis is primarily a key-value (KV) store, while MongoDB is a document-oriented database.\n2. Data Model: Redis stores data in a simpler KV format, whereas MongoDB stores data in JSON-like documents with support for more complex data structures like arrays, objects, and embedded documents.\n3. Storage: Redis uses an in-memory database, whereas MongoDB can be configured to use both in-memory and disk-based storage.\n\nPlease note that these are general differences, and there may be other specific differences depending on the version or configuration of Redis and MongoDB being used.",
+    "Name one way in which a linked-list is better than a continguous array.": "One way in which a linked list is better than a contiguous array is that it allows for efficient insertion or deletion of elements at any position, which would be slow and inefficient with an array.",
+    "What is the name of the library that allows us to interact with a MongoDB in Python?": "PyMongo",
+    "What is the name of a query language for Neo4J?": "Cypher",
+    "What is the difference between a B tree and a B+ tree?": "I don't know."
+}
