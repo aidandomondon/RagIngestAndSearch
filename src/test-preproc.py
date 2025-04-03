@@ -91,9 +91,9 @@ def test_redis_timed(doc_entries, test_query):
 
 def main():
 
-    pdf_paths = ["data/02 - The Relational Model and Rel Algebra - Instructor.pdf",
-                "data/03 - Moving Beyond the Relational Model.pdf",
-                "data/05 - NoSQL Intro + KV DBs.pdf"]
+    pdf_paths = ["../data/02 - The Relational Model and Rel Algebra - Instructor.pdf",
+                "../data/03 - Moving Beyond the Relational Model.pdf",
+                "../data/05 - NoSQL Intro + KV DBs.pdf"]
 
     chunk_size = 300
     overlap = 50
@@ -148,7 +148,7 @@ def main():
             ])
 
     # Write to CSV
-    csv_filename = "src/preprocessing_test_results.csv"
+    csv_filename = "./preprocessing_test_results.csv"
     with open(csv_filename, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([

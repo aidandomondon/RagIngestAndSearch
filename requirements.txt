@@ -8,3 +8,7 @@ psutil
 qdrant-client
 nltk
 tqdm
+jupyter
+pandas
+matplotlib
+seaborn
