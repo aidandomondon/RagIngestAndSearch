@@ -38,8 +38,8 @@ Experiments are run by:
 
 | Experiment Variable(s) | Script | Dependencies |
 | - | - | - |
-| Chunk size, Chunk overlap size | [test-chunking.py](./src/test-chunking.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
-| Text pre-processing technique | [test-preprocessing.py](./src/test-preprocessing.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
+| Chunk size, Chunk overlap size | [test-chunk-size.py](./src/test-chunk-size.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
+| Text pre-processing technique | [test-preproc.py](./src/test-preproc.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
 | Embedding Model | [test-embedding-model.py](./src/test-embedding-model.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [all-minilm](#all-minilm), [all-minilm:33m](#all-minilm33m)
 | Vector Database | [test-db.py](./src/test-db.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32), [Qdrant](#Qdrant)
 | System Prompt | [test-prompt.py](./src/test-prompt.py) | [Redis-stack](#Redis-stack), [nomic-embed-text](#Nomic-embed-text), [Llama3.2](#Llama32)
